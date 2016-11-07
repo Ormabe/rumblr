@@ -24,6 +24,17 @@ mongoose.connect('mongodb://localhost/blogDataBase');
 
 //Store connection as variable
 const db = mongoose.connection;
+const Post = require('mongoose').model('Post');
+//Configure router:
+app.get('/posts/:id', (req, res) => {
+  Post.findById(req.params.id, (err, data) => {
+    res.send(data);
+  })
+});
+
+// app.get('/*', (req, res) => {
+//   res.sendFile(`${rootPath}/front/index.html`);
+// });
 
 //Start the server after successful database connection:
 db.on('open', () => {
@@ -37,5 +48,6 @@ db.on('open', () => {
   });
 });
 
-  //Configure router:
-
+db.on('error',() => {
+	console.log('error in db connection!');
+});
